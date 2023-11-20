@@ -1,0 +1,41 @@
+0 info it worked if it ends with ok
+1 verbose cli [
+1 verbose cli   '/home/franci/.nvm/versions/node/v20.7.0/bin/node',
+1 verbose cli   '/home/franci/code/francilobbie/node_modules/.bin/npm',
+1 verbose cli   'show',
+1 verbose cli   'caniuse-lite',
+1 verbose cli   '--json'
+1 verbose cli ]
+2 info using npm@2.15.12
+3 info using node@v20.7.0
+4 verbose stack Error: Cannot find module 'slash'
+4 verbose stack Require stack:
+4 verbose stack - /home/franci/code/francilobbie/node_modules/npm/node_modules/read-package-json/read-json.js
+4 verbose stack - /home/franci/code/francilobbie/node_modules/npm/lib/view.js
+4 verbose stack - /home/franci/code/francilobbie/node_modules/npm/lib/npm.js
+4 verbose stack - /home/franci/code/francilobbie/node_modules/npm/bin/npm-cli.js
+4 verbose stack     at Module._resolveFilename (node:internal/modules/cjs/loader:1048:15)
+4 verbose stack     at Module._load (node:internal/modules/cjs/loader:901:27)
+4 verbose stack     at Module.require (node:internal/modules/cjs/loader:1115:19)
+4 verbose stack     at require (node:internal/modules/helpers:130:18)
+4 verbose stack     at Object.<anonymous> (/home/franci/code/francilobbie/node_modules/npm/node_modules/read-package-json/read-json.js:14:13)
+4 verbose stack     at Module._compile (node:internal/modules/cjs/loader:1241:14)
+4 verbose stack     at Module._extensions..js (node:internal/modules/cjs/loader:1295:10)
+4 verbose stack     at Module.load (node:internal/modules/cjs/loader:1091:32)
+4 verbose stack     at Module._load (node:internal/modules/cjs/loader:938:12)
+4 verbose stack     at Module.require (node:internal/modules/cjs/loader:1115:19)
+5 verbose cwd /home/franci/code/francilobbie/projets/airbnb_clone
+6 error Linux 5.15.90.1-microsoft-standard-WSL2
+7 error argv "/home/franci/.nvm/versions/node/v20.7.0/bin/node" "/home/franci/code/francilobbie/node_modules/.bin/npm" "show" "caniuse-lite" "--json"
+8 error node v20.7.0
+9 error npm  v2.15.12
+10 error code MODULE_NOT_FOUND
+11 error Cannot find module 'slash'
+11 error Require stack:
+11 error - /home/franci/code/francilobbie/node_modules/npm/node_modules/read-package-json/read-json.js
+11 error - /home/franci/code/francilobbie/node_modules/npm/lib/view.js
+11 error - /home/franci/code/francilobbie/node_modules/npm/lib/npm.js
+11 error - /home/franci/code/francilobbie/node_modules/npm/bin/npm-cli.js
+12 error If you need help, you may report this error at:
+12 error     <https://github.com/npm/npm/issues>
+13 verbose exit [ 1, true ]

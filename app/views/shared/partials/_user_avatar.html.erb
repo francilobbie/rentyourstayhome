@@ -1,0 +1,29 @@
+<div>
+  <div class="flex items-center">
+    <div class="flex-none hover:bg-gray-100 rounded-full p-1 cursor-pointer" id="close-button">
+    <header class="flex items-center">
+        <button class="flex-none hover:bg-gray-100 rounded-full p-1 cursor-pointer" data-modal-target="closeButton">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </header>
+    </div>
+  </div>
+  <div class="flex-grow mt-7 ml-2">
+    <h2 class="text-2xl text-center mb-6 font-semibold">Your avatar</h2>
+    <div class="w-full avatar-container overflow-hidden rounded-lg flex justify-center focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+      <%= cl_image_tag content_params[:profile].avatar.key, alt: "User Avatar", class: "rounded-lg object-cover", style: "width: 500px; height: 500px" %>
+      <div>
+          <button
+            id="delete-avatar-button"
+            data-image-key="<%= content_params[:profile].avatar.key %>"
+            data-profile-id="<%= content_params[:profile].id %>"
+            class="text-red-500 mt-2 text-xl bg-white p-1 rounded"
+          >
+            Delete
+          </button>
+      </div>
+    </div>
+  </div>
+</div>

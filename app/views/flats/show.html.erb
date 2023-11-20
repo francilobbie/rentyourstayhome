@@ -1,0 +1,145 @@
+<div
+  class="bg-white"
+  data-controller="flat"
+  >
+  <div class="pt-6">
+
+    <div class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <h1 class=" text-3xl font-semibold "><%= @flat.title %></h1>
+    </div>
+
+    <div class="mx-auto flex max-w-2xl items- justify-between space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div>
+        <p class=" mt-2 text-sm flex items-center justify-center font-medium "><span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 inline-block relative" style="bottom: 2px">
+            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+          </svg>
+          <% if @flat.reviews.count < 1 %>
+            No reviews yet
+          <% else %>
+            <%= @flat.average_rating.to_f.round(2) %>
+          <% end %>
+          </span><span class="flat_show_dot flex items-center mx-2 justify-center  w-1.5">●</span>
+          <span class=" underline "><%= @flat.reviews.count %> reviews</span><span class="flat_show_dot flex items-center mx-2 justify-center "> ● </span>
+          <span class=" underline "><%= @flat.address_by_coordinates %></span>
+        </p>
+      </div>
+      <div class=" flex ">
+        <div
+          class="mx-auto text-sm flex cursor-pointer rounded hover:bg-gray-100 items-center font-medium max-w-2xl space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-3"
+          data-controller="share"
+          data-action="click->share#share"
+        >
+          <svg
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+            style="display: block; fill: none; height: 16px; width: 16px; stroke: currentcolor; stroke-width: 2px; overflow: visible;"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            class=""
+            >
+              <g fill="none">
+                <path d="M27 18v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-9"></path>
+                <path d="M16 3v23V3z"></path>
+                <path d="M6 13l9.293-9.293a1 1 0 0 1 1.414 0L26 13"></path>
+              </g>
+          </svg>
+          <p class=" underline mx-2 ">Share</p>
+        </div>
+        <% if @flat.user == current_user %>
+          <%# link_to the destroy path of the falt if this flat belongs to the current user %>
+          <%= button_to host_flat_path(@flat), method: :delete, data: { confirm: 'Are you sure you want to delete this property?' } do %>
+            <div
+              class="mx-auto text-sm flex cursor-pointer rounded hover:bg-red-100 items-center font-medium max-w-2xl space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-3"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          <% end %>
+        <% else %>
+          <%# link_to to the favorite button if this flat is not the current user's flat %>
+          <div
+            class="mx-auto text-sm flex cursor-pointer rounded hover:bg-gray-100 items-center font-medium max-w-2xl space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-3"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              data-favorite-color="red"
+              data-unfavorite-color="#ffff"
+              fill="<%= @flat.favorited_by?(current_user) ? 'red' : '#ffff' %>"
+              data-controller="favorite"
+              data-action="click->favorite#favorite"
+              data-user-logged-in="<%= user_signed_in? %>"
+              data-user-id="<%= current_user&.id %>"
+              data-favorited="<%= @flat.favorited_by?(current_user) %>"
+              data-flat-id="<%= @flat.id %>"
+              data-favorite-id="<%= @flat.favorites.find_by(user: current_user)&.id %>"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-5 h-5 text-black cursor-pointer "
+              >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            </svg>
+            <p class=" underline mx-2 ">Save</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Image gallery -->
+<div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-2 lg:px-8">
+    <!-- Default Image -->
+    <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-tl-lg rounded-bl-lg lg:block">
+        <%= cl_image_tag @flat.default_image.key, class: "h-full w-full object-cover object-center pointer-cursor group-hover:opacity-75 " %>
+    </div>
+
+    <!-- Second & Third Image -->
+    <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-2">
+        <div class="aspect-h-2 aspect-w-3 overflow-hidden ">
+            <%= cl_image_tag @flat.second_image.key, class: "h-full w-full object-cover object-center pointer-cursor group-hover:opacity-75 " %>
+        </div>
+        <div class="aspect-h-2 aspect-w-3 overflow-hidden ">
+            <%= cl_image_tag @flat.third_image.key, class: "h-full w-full object-cover object-center pointer-cursor group-hover:opacity-75 " %>
+        </div>
+    </div>
+
+    <!-- Last two images -->
+    <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-2">
+        <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-tr-lg">
+          <% if @flat.images.count > 3%>
+            <%= cl_image_tag @flat.fourth_image.key, class: "h-full w-full object-cover object-center pointer-cursor group-hover:opacity-75 " %>
+          <% else %>
+            <img src="https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg" alt="Model wearing plain white basic tee." class="h-full w-full object-cover object-center">
+          <% end %>
+        </div>
+        <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-br-lg">
+          <% if @flat.images.count > 3%>
+            <%= cl_image_tag @flat.fifth_image.key, class: "h-full w-full object-cover object-center pointer-cursor group-hover:opacity-75 " %>
+          <% else %>
+            <img src="https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg" alt="Model wearing plain white basic tee." class="h-full w-full object-cover object-center">
+          <% end %>
+        </div>
+    </div>
+
+    <button
+      data-controller="flat-images"
+      data-action="click->flat-images#show"
+      class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded"
+    >
+      View All Images
+    </button>
+</div>
+
+
+    <%= render "product_info" %>
+    <div class="max-w-2xl mx-auto  sm:px-6 lg:grid lg:max-w-7xl lg:px-8">
+      <hr>
+    </div>
+    <%= render "reviews" %>
+  </div>
+</div>
+
+<%= render "shared/modal",modal_trigger_id: "share-modal-trigger" ,modal_content: "shared/partials/share_flat", content_params: { flat: @flat } %>
+<%= render "shared/modal",modal_trigger_id: "images-modal-trigger"  ,modal_content: "shared/partials/flat_images", content_params: { flat: @flat } %>

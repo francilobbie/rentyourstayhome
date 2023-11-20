@@ -1,0 +1,64 @@
+<div class="h-full bg-gray-100">
+  <main class="mx-auto max-w-7xl pb-10 lg:px-8 lg:py-12">
+    <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
+      <%= render "sidebar" %>
+      <!-- Payment details -->
+      <div class="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">
+        <section>
+          <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+            <div class="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
+              <div class="ml-4 mt-2">
+                <h3 class="text-base font-semibold leading-6 text-gray-900">Your properties</h3>
+              </div>
+              <div class="ml-4 mt-2 flex-shrink-0">
+              <%= link_to "Create new property", new_host_flat_path, class: "relative inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+              </div>
+            </div>
+          </div>
+            <ul role="list" class="divide-y divide-gray-100">
+              <% @flats.each do |flat|  %>
+                <li class="relative flex justify-between py-5 ">
+                  <%= link_to flat_path(flat) do %>
+                    <div class="flex gap-x-4 pr-6 sm:w-1/2 sm:flex-none">
+                      <% if flat.images.attached? %>
+                        <%= cl_image_tag flat.default_image.key, alt: "Image of #{flat.name}", class: "h-12 w-12 flex-none rounded-full bg-gray-50" %>
+                      <% else %>
+                        <%= image_tag "https://source.unsplash.com/1600x900/?#{flat.address}", alt: "Random image for #{flat.address}", class: "object-cover h-12 w-12 flex-none rounded-full bg-gray-50" %>
+                      <% end  %>
+                      <div class="min-w-0 flex-auto">
+                        <p class="text-sm font-semibold leading-6 text-gray-900">
+                          <%= link_to flat_path(flat) do %>
+                            <span class="absolute inset-x-0 -top-px bottom-0"></span>
+                            <%= flat.name %> - Created on : <%= flat.created_at.strftime("%m/%d/%Y") %>
+                          <% end %>
+                        </p>
+                        <p class="mt-1 flex text-xs leading-5 text-gray-500">
+                          <%= flat.title %>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between gap-x-4 sm:w-1/2 sm:flex-none">
+                      <div class="hidden sm:block">
+                        <p class="text-sm leading-6 text-gray-900"><%= flat.bookings.next_future_bookings.count %> Actives Reservations</p>
+                        <p class="mt-1 text-xs leading-5 text-gray-500"><%= flat.address %></p>
+                      </div>
+                      <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                  <% end %>
+                </li>
+                  <div class="relative">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                      <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center">
+                    </div>
+                  </div>
+              <% end %>
+            </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>

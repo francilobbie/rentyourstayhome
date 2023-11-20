@@ -1,0 +1,2 @@
+module Flats::SearchHelper
+end

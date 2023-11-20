@@ -1,0 +1,2 @@
+module HostifyHelper
+end

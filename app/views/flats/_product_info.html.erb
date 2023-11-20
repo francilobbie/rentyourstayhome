@@ -1,0 +1,125 @@
+    <!-- Product info -->
+    <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16">
+      <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+        <% if @flat.flat_type == "room" %>
+          <h1 class="text-xl font-sm tracking-tight text-gray-900 sm:text-3xl">Room in condo hosted by <%= @flat.user.full_name %></h1>
+        <% else %>
+          <h1 class="text-xl font-sm tracking-tight text-gray-900 sm:text-3xl">Entire rental unit hosted by <%= @flat.user.full_name %></h1>
+        <% end %>
+      </div>
+
+      <% if @flat.user != current_user %>
+        <!-- Reservation component -->
+        <div
+          class=" lg:row-span-3 lg:mt-0"
+          data-controller="reservation-component"
+          data-default-checkin-date="<%= Date.tomorrow.to_formatted_s(:fr_date) %>"
+          data-default-checkout-date="<%= (Date.tomorrow + 1.day).to_formatted_s(:fr_date) %>"
+          data-nightly-price="<%= humanized_money(@flat.price) %>"
+          data-service-fee-percentage="<%= humanized_money Flat::SERVICE_FEE_PERCENTAGE %>"
+          data-cleaning-fee="<%= humanized_money Flat::CLEENING_FEE_MONEY %>"
+        >
+          <div class="mt-10 lg:mt-0">
+            <div class="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm">
+              <h2 class="px-4 py-6 text-2xl font-medium text-gray-900"><%= humanized_money(@flat.price) %> <%= currency_symbol %> night</h2>
+
+                <div class="py-2 px-4  isolate -space-y-px rounded-md shadow-sm">
+                  <div class="relative rounded-md rounded-b-none px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
+                    <label for="name" class="block text-xs font-medium text-gray-900 uppercase">check-in</label>
+                    <input
+                      type="text"
+                      name="checkin"
+                      id="checkin"
+                      class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="4/09/2023"
+                      data-reservation-component-target="checkin"
+                    >
+                  </div>
+                  <div class="relative rounded-md rounded-t-none px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
+                    <label for="job-title" class="block text-xs font-medium text-gray-900 uppercase">check-out</label>
+                    <input
+                      type="text"
+                      name="checkout"
+                      id="chekout"
+                      class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="23/09/2023"
+                      data-reservation-component-target="checkout"
+                    >
+                  </div>
+                </div>
+
+              <div class="divide-y divide-gray-200">
+              </div>
+              <dl class="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <dt class="text-sm"><%= humanized_money(@flat.price) %> <%= currency_symbol %> x <span data-reservation-component-target="numOfNights">0</span> nights</dt>
+                  <dd class="text-sm font-medium text-gray-900"><span data-reservation-component-target="nightlyTotal">0</span></dd>
+                </div>
+                <div class="flex items-center justify-between">
+                  <dt class="text-sm">Cleaning fee</dt>
+                  <dd class="text-sm font-medium text-gray-900"><%= humanized_money Flat::CLEENING_FEE_MONEY %> <%= currency_symbol %></dd>
+                </div>
+                <div class="flex items-center justify-between">
+                  <dt class="text-sm">Service fee</dt>
+                  <dd class="text-sm font-medium text-gray-900" data-reservation-component-target="serviceFee">0</dd>
+                </div>
+                <div class="flex items-center justify-between border-t border-gray-200 pt-6">
+                  <dt class="text-base font-medium">Total</dt>
+                  <dd class="text-base font-medium text-gray-900"><span data-reservation-component-target="total">0</span></dd>
+                </div>
+              </dl>
+
+              <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+                <button
+                  data-submit-url="<%= new_flat_booking_path(@flat) %>"
+                  data-action="reservation-component#sumbitReservationComponent"
+                  type="submit"
+                  class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">Confirm order</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% else %>
+        <!-- The flat'user component -->
+        <div
+          class=" lg:row-span-3 lg:mt-0"
+        >
+          <div class="mt-10 lg:mt-0">
+            <div class="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm">
+              <h2 class="px-4 py-6 text-2xl font-medium text-gray-900"><%= humanized_money(@flat.price) %> <%= currency_symbol %> night</h2>
+
+
+
+              <div class="divide-y divide-gray-200">
+              </div>
+              <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+                <%= link_to edit_host_flat_path(@flat), class: "w-full inline-block text-center rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50" do %>
+                  Modify property
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+        <!-- Description and details -->
+        <div style="height: 200px;" class="mb-4">
+          <h3 class="sr-only">Description</h3>
+          <div class="">
+            <p class=" text-base text-gray-900"><%= truncate @flat.description, length: 500 %></p>
+            <% if @flat.description.length > 500 %>
+              <p class="mb-4 text-base text-gray-900">...</p>
+              <%= link_to "Show more >", "", data: { action: "flat#showDescription" }, class: " text-base text-gray-900 font-semibold underline " %>
+            <% end %>
+          </div>
+        </div>
+        <div style="width: 100%; height: 300px;"
+            data-controller="map"
+            data-map-markers-value="<%= @markers.to_json %>"
+            data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"></div>
+        </div>
+      </div>
+    </div>
+
+<%= render "shared/modal",modal_trigger_id: "flat-description-trigger" ,modal_content: "shared/partials/flat_description", content_params: { flat: @flat } %>

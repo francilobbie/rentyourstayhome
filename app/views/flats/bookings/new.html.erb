@@ -1,0 +1,66 @@
+<div class="bg-gray-50">
+  <div class="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
+    <h2 class="sr-only">Checkout</h2>
+
+    <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+      <!-- Payment -->
+      <div data-controller="stripe-elements-form">
+        <h2 class="text-lg font-medium text-gray-900">Payment</h2>
+          <%= stripe_javascript_tag %>
+          <%=
+            stripe_elements_tag(
+              submit_path: reservations_payements_path(
+                flat_id: @flat.id,
+                user_id: current_user.id,
+                checkin_date: @checkin_date,
+                checkout_date: @checkout_date,
+                subtotal: @subtotal,
+                cleaning_fee: @cleaning_fee,
+                service_fee: @service_fee,
+                total: @total
+              ),
+              )
+          %>
+          <a href="https://stripe.com/docs/testing?locale=en-EN" target="_blank">
+            <h3 class="text-indigo-600 font-medium mt-6 text-lg">Get test credit cards here</h3>
+          </a>
+      </div>
+
+      <!-- Reservation details -->
+      <div class="mt-10 lg:mt-0">
+        <h2 class="text-lg font-medium text-gray-900">Your reservation</h2>
+
+        <div class="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm">
+          <h3 class="sr-only">Items in your cart</h3>
+
+          <dl class="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">
+            <div class="flex items-center justify-between">
+              <dt class="text-sm">Checkin</dt>
+              <dd class="text-sm font-medium text-gray-900"><%= @checkin_date %></dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-sm">Checkout</dt>
+              <dd class="text-sm font-medium text-gray-900"><%= @checkout_date %></dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-sm"><%= humanized_money(@flat.price) %> <%= currency_symbol %> x <%= Date.strptime(@checkout_date, Date::DATE_FORMATS[:fr_date]).mjd - Date.strptime(@checkin_date, Date::DATE_FORMATS[:fr_date]).mjd %> nights</dt>
+              <dd class="text-sm font-medium text-gray-900"><%= @subtotal %> €</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-sm">Cleaning fee</dt>
+              <dd class="text-sm font-medium text-gray-900"><%= @cleaning_fee %> €</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt class="text-sm">Service fee</dt>
+              <dd class="text-sm font-medium text-gray-900"><%= @service_fee %> €</dd>
+            </div>
+            <div class="flex items-center justify-between border-t border-gray-200 pt-6">
+              <dt class="text-base font-medium">Total</dt>
+              <dd class="text-base font-medium text-gray-900"><%= @total %> €</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
